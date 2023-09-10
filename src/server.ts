@@ -32,6 +32,7 @@ main()
 .catch(console.error)
 .finally(() => client.close());
 
+console.log(1);
 
 
 
