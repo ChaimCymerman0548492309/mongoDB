@@ -117,7 +117,6 @@ const trips: Trip[] = [
 ];
 
 const client = new MongoClient('mongodb://127.0.0.1:27017');
-console.log('d');
 
 
 // async function main() {
