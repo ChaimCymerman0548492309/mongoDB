@@ -21,16 +21,19 @@ app.listen(3000, () => {
 
 
 const client = new MongoClient('mongodb://127.0.0.1:27017');
+
 async function main() {
-await client.connect();
-const db = client.db('test');
-const collection = db.collection('users');
-return 'done1.';
+  await client.connect();
+  const db = client.db('test');
+  const collection = db.collection('users');
+  return 'done1.';
 }
+
+export default main
 main()
-.then(console.log)
-.catch(console.error)
-.finally(() => client.close());
+  .then(console.log)
+  .catch(console.error)
+  .finally(() => client.close());
 
 
 

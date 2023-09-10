@@ -1,5 +1,6 @@
 import { Trip } from "../models/trip";
 import { v4 as uuidv4 } from 'uuid';
+
 const { MongoClient } = require('mongodb');
 
 const trips: Trip[] = [
@@ -162,34 +163,48 @@ export async function createTrip(newTrip: Trip): Promise<any> {
   const collection = db.collection('users');
 
   const oneDoc = await collection.insertOne({ newTrip })
+console.log(newTrip);
 
   return newTrip;
 }
 
 // Update a trip
-export async function updateTrip(id: string): Promise<Trip> {
+export async function updateTrip(updatedTrip: Trip): Promise<Trip> {
+
   await client.connect();
   const db = client.db('test');
   const collection = db.collection('users');
+  const { id, name, destination, startDate, endDate, description, price, image, activities } = updatedTrip
   const updateResult = await collection.updateOne(
-    
     { "id": id },
     {
       $set: {
-        name:
-          "great this is update"
+        name,
+        destination,
+        startDate,
+        endDate,
+        description,
+        price,
+        image,
+        activities,
       }
     }
   );
+console.log(updateResult);
 
   return updateResult;
 }
 
 // Delete a trip
-export function deleteTrip(id: string): Trip | undefined {
-  const index = trips.findIndex((trip) => trip.id === id);
-  if (index === -1) {
-    return undefined; // Trip not found
-  }
-  return trips.splice(index, 1)[0];
+export async function deleteTrip(id: string): Promise<any> {
+  await client.connect();
+  const db = client.db('test');
+  const collection = db.collection('users');
+
+  const deleteResult = await collection.deleteOne(
+    {"id": id}
+  );
+  console.log('deleted'+ deleteResult);
+  
+  return 'delete result:'+ deleteResult;
 }
