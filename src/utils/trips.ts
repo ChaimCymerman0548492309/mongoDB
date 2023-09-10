@@ -116,16 +116,18 @@ const trips: Trip[] = [
 ];
 
 const client = new MongoClient('mongodb://127.0.0.1:27017');
-async function main() {
-  await client.connect();
-  const db = client.db('test');
-  const collection = db.collection('users');
 
-  // const oneDoc = await collection.insertOne({ a: 0 })
-  // const insertResult = await collection.insertMany(
-  //   trips);
-  return 'done.';
-}
+
+// async function main() {
+//   await client.connect();
+//   const db = client.db('test');
+//   const collection = db.collection('users');
+
+//   const oneDoc = await collection.insertOne({ a: 0 })
+//   const insertResult = await collection.insertMany(
+//     trips);
+//   return 'done.';
+// }
 // main().then(console.log)
 
 
@@ -136,30 +138,51 @@ export async function getAllTrips(): Promise<any> {
   const collection = db.collection('users');
   const findResult = await collection.find({}).toArray();
   console.log(findResult);
-  
-  return 'done.';
+
+  return findResult;
 }
 
 // Get a trip by ID
-export function getTripById(id: string): Trip | undefined {
-  return trips.find((trip) => trip.id === id);
+export async function getTripById(id: string): Promise<any> {
+  await client.connect();
+  const db = client.db('test');
+  const collection = db.collection('users');
+  const filteredDocs = await collection.find({ "id": id }).toArray();
+  for (const doc of filteredDocs) {
+    console.log(doc);
+  }
+  return filteredDocs
 }
 
 // Create a new trip
-export function createTrip(newTrip: Trip): Trip {
+export async function createTrip(newTrip: Trip): Promise<any> {
   newTrip.id = uuidv4();
-  trips.push(newTrip);
+  await client.connect();
+  const db = client.db('test');
+  const collection = db.collection('users');
+
+  const oneDoc = await collection.insertOne({ newTrip })
+
   return newTrip;
 }
 
 // Update a trip
-export function updateTrip(updatedTrip: Trip): Trip | undefined {
-  const index = trips.findIndex((trip) => trip.id === updatedTrip.id);
-  if (index === -1) {
-    return undefined; // Trip not found
-  }
-  trips[index] = updatedTrip;
-  return updatedTrip;
+export async function updateTrip(id: string): Promise<Trip> {
+  await client.connect();
+  const db = client.db('test');
+  const collection = db.collection('users');
+  const updateResult = await collection.updateOne(
+    
+    { "id": id },
+    {
+      $set: {
+        name:
+          "great this is update"
+      }
+    }
+  );
+
+  return updateResult;
 }
 
 // Delete a trip

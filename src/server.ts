@@ -25,7 +25,7 @@ async function main() {
 await client.connect();
 const db = client.db('test');
 const collection = db.collection('users');
-return 'done.';
+return 'done1.';
 }
 main()
 .then(console.log)

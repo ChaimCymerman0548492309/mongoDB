@@ -9,7 +9,7 @@ import {
 import { Trip } from '../models/trip';
 
 // Get all trips
-export const getAllTripsController = (req: Request, res: Response) => {
+export  const getAllTripsController = (req: Request, res: Response) => {
   const trips = getAllTrips();
   res.json(trips);
 };
